@@ -49,7 +49,7 @@ app.get( '/songs/:id', ( req, res ) => {
     let songId = req.params.id;
 
     // DON'T DO THIS!
-    // http://localhost:3000/songs/1';DROP%20TABLE%20%22songs%22;--
+    // http://localhost:3000/songs/1';DROP TABLE "songs";--
     // ^ will drop your database table
     //const queryString = `SELECT * FROM "songs" WHERE "id" = '${songId}';`
 
@@ -107,14 +107,14 @@ app.put( '/songs/:id', ( req, res ) => {
     let queryString = '';
 
     if(req.body.direction === 'up'){
-        queryString = `UPDATE "songs" SET "rank" = "rank"+1 WHERE "id" = ${req.params.id}`;
+        queryString = `UPDATE "songs" SET "rank" = "rank"+1 WHERE "id" = $1`;
     } else if (req.body.direction === 'down'){
-        queryString = `UPDATE "songs" SET "rank" = "rank"-1 WHERE "id" = ${req.params.id}`;
+        queryString = `UPDATE "songs" SET "rank" = "rank"-1 WHERE "id" = $1`;
     } else {
         console.log("send better data");
     }
 
-    pool.query(queryString)
+    pool.query(queryString, [req.params.id])
     .then((result) => {
         console.log("RESULT from put!", result);
         res.sendStatus(200);
