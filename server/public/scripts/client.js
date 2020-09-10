@@ -10,7 +10,7 @@ function onReady(){
 
 function rankUp(){
     let songId = $(this).data('id');  
-    
+
     console.log('up', songId);
     $.ajax({
         method: 'PUT',
@@ -20,6 +20,7 @@ function rankUp(){
         }
     }).then(function(response){
         console.log('response from rankUP', response);
+        getSongs();
     }).catch( function(err){
         console.log("Error in delete", err);
         alert("ruh-roh");
