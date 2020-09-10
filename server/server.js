@@ -48,7 +48,16 @@ app.get( '/songs/:id', ( req, res ) => {
     // Grab song ID from URL params
     let songId = req.params.id;
 
+    // DON'T DO THIS!
+    // http://localhost:3000/songs/1';DROP%20TABLE%20%22songs%22;--
+    // ^ will drop your database table
+    //const queryString = `SELECT * FROM "songs" WHERE "id" = '${songId}';`
+
+    // Do this:
     const queryString = `SELECT * FROM "songs" WHERE "id" = $1;`
+
+    console.log(queryString);
+
     pool.query(queryString, [songId])
         .then((results) => {
             res.send(results.rows)
