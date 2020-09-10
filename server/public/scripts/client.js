@@ -4,8 +4,32 @@ function onReady(){
     getSongs();
     $( '#addSongButton' ).on( 'click', addSong );
     $( document ).on( 'click', '.deleteSongBtn', deleteSong );
+    $( document ).on( 'click', '.rankUp', rankUp );
+    $( document ).on( 'click', '.rankDown', rankDown );
 } // end onReady
 
+function rankUp(){
+    let songId = $(this).data('id');  
+    
+    console.log('up', songId);
+    $.ajax({
+        method: 'PUT',
+        url: `/songs/${songId}`,
+        data: {
+            direction: 'up'
+        }
+    }).then(function(response){
+        console.log('response from rankUP', response);
+    }).catch( function(err){
+        console.log("Error in delete", err);
+        alert("ruh-roh");
+    });
+}
+
+function rankDown(){
+    let songId = $(this).data('id');  
+    console.log('down', songId);
+}
 
 function deleteSong(){
     // Grab the `data-id` attribute
@@ -65,6 +89,8 @@ function getSongs(){
             ${ response[i].artist }
             ${ response[i].published.split( 'T' )[0] }
             <button class="deleteSongBtn" data-id="${response[i].id}">Delete Me</button>
+            <button class="rankUp" data-id="${response[i].id}">Up</button>
+            <button class="rankDown" data-id="${response[i].id}">Down</button>
             </li>`)
         } // end for
     }).catch( function( err ){
