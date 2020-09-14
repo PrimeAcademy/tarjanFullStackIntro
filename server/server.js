@@ -17,6 +17,7 @@ const Pool = pg.Pool;     // pg.Pool is NOT tacos
 // configure the connection to db
 let pool;
 if (process.env.DATABASE_URL) {
+    console.log('Using heroku DATABASE_URL');
     // heroku config
     pool = new pg.Pool({
         connectionString: process.env.DATABASE_URL
@@ -25,7 +26,7 @@ if (process.env.DATABASE_URL) {
 else {
     pool = new pg.Pool({
         database: 'music_library',
-    })
+    });
 }
 
 // spin up server
