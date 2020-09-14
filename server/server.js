@@ -9,17 +9,15 @@ app.use( express.static( 'server/public' ) );
 app.use( bodyParser.urlencoded( { extended: true } ) );
 
 // globals
-const port = 3000;
+const herokuPort = process.env.PORT;
+const port = herokuPort || 3000;
 
 // db setup
 const Pool = pg.Pool;     // pg.Pool is NOT tacos
 // configure the connection to db
 const pool = new Pool({
     database: "music_library", // db name (NOT table name)
-    host: "localhost", // deafult when running locally, will change when deploying
     port: 5432, // default port for local, also will change when deployed
-    max: 12, // max # of connections
-    idleTimeoutMillis: 20000 // connection time out in ms
 }); // end pool setup
 
 // spin up server
