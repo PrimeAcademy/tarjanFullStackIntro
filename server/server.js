@@ -15,10 +15,18 @@ const port = herokuPort || 3000;
 // db setup
 const Pool = pg.Pool;     // pg.Pool is NOT tacos
 // configure the connection to db
-const pool = new Pool({
-    database: "music_library", // db name (NOT table name)
-    port: 5432, // default port for local, also will change when deployed
-}); // end pool setup
+let pool;
+if (process.env.DATABASE_URL) {
+    // heroku config
+    pool = new pg.Pool({
+        connectionString: process.env.DATABASE_URL
+    });
+}
+else {
+    pool = new pg.Pool({
+        database: 'music_library',
+    })
+}
 
 // spin up server
 app.listen( port, ()=>{
